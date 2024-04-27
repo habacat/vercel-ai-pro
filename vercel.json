@@ -3,9 +3,10 @@
   "builds": [
     {
       "src": "main.py",
-      "use": "@vercel/python",
+      "use": "@now/python",
       "config": {
-        "pythonVersion": "3.9"
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.9"
       }
     }
   ],

@@ -3,7 +3,6 @@ import json
 import time
 
 import requests
-import uvicorn
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse
@@ -133,6 +132,10 @@ async def chat(request: Request):
         return next_chat_web_summary(summary)
 
 
+@app.get("/")
+async def read_root():
+    return {"Hello": "World"}
+
 def answer_stream(model, chat_id, question='鲁迅为什么暴打周树人？', summary=False):
     if model not in model_infos:
         model = default_model
@@ -193,6 +196,7 @@ def answer_stream(model, chat_id, question='鲁迅为什么暴打周树人？', 
 
 
 if __name__ == '__main__':
+    import uvicorn
     find_chat_by_question = LRUCache(1000)
     find_last_msg_in_chat = LRUCache(1000)
     model_infos = {

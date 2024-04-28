@@ -57,6 +57,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+find_chat_by_question = LRUCache(1000)
+find_last_msg_in_chat = LRUCache(1000)
+model_infos = {
+    'gpt-3.5-turbo': 'https://chatpro.ai-pro.org/api/ask/openAI',
+    'gpt-4-1106-preview': 'https://chatpro.ai-pro.org/api/ask/openAI',
+    'gpt-4-pro-max': 'https://chatpro.ai-pro.org/api/ask/openAI',
+
+    'chat-bison': 'https://chatpro.ai-pro.org/api/ask/google',
+    'text-bison': 'https://chatpro.ai-pro.org/api/ask/google',
+    'codechat-bison': 'https://chatpro.ai-pro.org/api/ask/google',
+
+    'openchat_3.5': 'https://chatpro.ai-pro.org/api/ask/Opensource',
+    'zephyr-7B-beta': 'https://chatpro.ai-pro.org/api/ask/Opensource',
+}
+default_model = 'gpt-4-pro-max'
 
 @app.options('/v1/chat/completions')
 async def pre_chat():
@@ -197,19 +212,4 @@ def answer_stream(model, chat_id, question='鲁迅为什么暴打周树人？', 
 
 if __name__ == '__main__':
     import uvicorn
-    find_chat_by_question = LRUCache(1000)
-    find_last_msg_in_chat = LRUCache(1000)
-    model_infos = {
-        'gpt-3.5-turbo': 'https://chatpro.ai-pro.org/api/ask/openAI',
-        'gpt-4-1106-preview': 'https://chatpro.ai-pro.org/api/ask/openAI',
-        'gpt-4-pro-max': 'https://chatpro.ai-pro.org/api/ask/openAI',
-
-        'chat-bison': 'https://chatpro.ai-pro.org/api/ask/google',
-        'text-bison': 'https://chatpro.ai-pro.org/api/ask/google',
-        'codechat-bison': 'https://chatpro.ai-pro.org/api/ask/google',
-
-        'openchat_3.5': 'https://chatpro.ai-pro.org/api/ask/Opensource',
-        'zephyr-7B-beta': 'https://chatpro.ai-pro.org/api/ask/Opensource',
-    }
-    default_model = 'gpt-4-pro-max'
     uvicorn.run(app, host='0.0.0.0', port=5000)
